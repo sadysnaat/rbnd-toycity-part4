@@ -25,4 +25,22 @@ class Udacidata
     end
     return result
   end
+
+  def self.first(n=1)
+    result =  self.all.first(n)
+    if result.size == 1
+      return result[0]
+    else
+      return result
+    end
+  end
+
+  def self.last(n=1)
+    result = self.all.last(n)
+    if result.size == 1
+      return result[0]
+    else
+      return result
+    end
+  end
 end
