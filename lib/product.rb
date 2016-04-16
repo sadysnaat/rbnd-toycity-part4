@@ -3,6 +3,7 @@ require_relative 'udacidata'
 class Product < Udacidata
   attr_reader :id, :price, :brand, :name
   FILE_PATH = File.dirname(__FILE__) + "/../data/data.csv"
+  create_finder_methods("brand", "name")
 
   def initialize(opts={})
 
@@ -20,6 +21,10 @@ class Product < Udacidata
 
   def to_csv_array
     return [id, brand, name, price]
+  end
+
+  def self.to_csv_headers
+    return ["id", "brand", "product", "price"]
   end
 
   def ==(another_product)
