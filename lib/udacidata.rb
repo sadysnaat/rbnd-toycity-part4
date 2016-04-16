@@ -1,6 +1,7 @@
 require_relative 'find_by'
 require_relative 'errors'
 require 'csv'
+require 'tempfile'
 
 class Udacidata
   # Your code goes here!
@@ -85,5 +86,24 @@ class Udacidata
       end
     end
     return item_to_destroy
+  end
+
+  def update(opts={})
+    temporary_file = Tempfile.new("#{self.class}s")
+    opts.each_pair do |key, value|
+      self.instance_variable_set "@#{key.to_s}", value
+    end
+    CSV.open(temporary_file, 'wb') do |csv|
+      csv << self.class.to_csv_headers
+      self.class.all.each do |item|
+        if self == item
+          csv << self.to_csv_array
+        else
+          csv << item.to_csv_array
+        end
+      end
+    end
+    File.rename(temporary_file, self.class::FILE_PATH)
+    return self
   end
 end
