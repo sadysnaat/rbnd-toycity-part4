@@ -35,4 +35,18 @@ module Analyzable
     end
     return average_price(products).to_s
   end
+
+  def count_by_brand(products)
+    if products.size == 0
+      return {}
+    end
+    return {products[0].brand => products.size }
+  end
+
+  def count_by_name(products)
+    if products.size == 0
+      return {}
+    end
+    return {products[0].name => products.size}
+  end
 end
