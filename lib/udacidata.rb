@@ -2,6 +2,7 @@ require_relative 'find_by'
 require_relative 'errors'
 require 'csv'
 require 'tempfile'
+require 'colorizr'
 
 class Udacidata
   # Your code goes here!
@@ -24,6 +25,8 @@ class Udacidata
       object_hash = object_hash.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
 
       # This has to be done as test case call product name as product
+      # So object_hash will not have key :name
+      # If we have unifirm header naming this can be avoided
       object_hash[:name] = object_hash[:product]
 
       result << self.new(object_hash)
@@ -60,7 +63,7 @@ class Udacidata
 
   def self.where(opts={})
     result = []
-    # TODO: Add support for multiple search for criterias
+    # TODO: Add support for multiple search criterias
     search_for = opts.keys[0]
     search_value = opts[search_for]
     self.all.each do |item|
@@ -73,18 +76,16 @@ class Udacidata
 
   def self.destroy(id)
     item_to_destroy = self.find(id)
-    items_to_keep = []
-    self.all.each do |item|
-      if item.id != id
-        items_to_keep << item
-      end
-    end
-    CSV.open(self::FILE_PATH, 'wb') do |csv|
+    temporary_file = Tempfile.new("#{self}s")
+    CSV.open(temporary_file, 'wb') do |csv|
       csv << self.to_csv_headers
-      items_to_keep.each do |item|
-        csv << item.to_csv_array
+      self.all.each do |item|
+        if item.id != id
+          csv << item.to_csv_array
+        end
       end
     end
+    File.rename(temporary_file, self::FILE_PATH)
     return item_to_destroy
   end
 
@@ -106,4 +107,21 @@ class Udacidata
     File.rename(temporary_file, self.class::FILE_PATH)
     return self
   end
+
+
+  def inspect
+    repr = "[#{self.class}] ".light_red
+    variables = self.instance_variables.map do |variable|
+      variable.to_s.sub('@','').light_blue + ':'.light_yellow + self.instance_variable_get(variable).to_s.light_green
+    end
+    repr += variables.join(" ")
+    repr += "\n"
+
+    repr
+  end
+
+  def to_s
+    inspect
+  end
+
 end

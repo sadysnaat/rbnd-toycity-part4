@@ -2,6 +2,9 @@ require_relative 'udacidata'
 
 class Product < Udacidata
   attr_reader :id, :price, :brand, :name
+
+  # FILE_PATH can be use to store file location
+  # for class. Each class can have their own file path
   FILE_PATH = File.dirname(__FILE__) + "/../data/data.csv"
   create_finder_methods("brand", "name")
 
@@ -19,6 +22,9 @@ class Product < Udacidata
     @price = opts[:price]
   end
 
+  # Classes Inheriting from Udacidata should
+  # implement these functions
+  # These methods help while writing to CSV
   def to_csv_array
     return [id, brand, name, price]
   end
@@ -30,6 +36,7 @@ class Product < Udacidata
   def ==(another_product)
     id == another_product.id
   end
+
   private
 
     # Reads the last line of the data file, and gets the id if one exists
