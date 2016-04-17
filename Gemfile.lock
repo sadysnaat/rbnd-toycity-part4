@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/sadysnaat/colorizr.git
+  revision: a5d656fe2409d263c2a4df67340909543479c806
+  branch: master
+  specs:
+    colorizr (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -9,6 +16,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorizr!
   faker
 
 BUNDLED WITH

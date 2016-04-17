@@ -6,7 +6,11 @@ class Product < Udacidata
   # FILE_PATH can be use to store file location
   # for class. Each class can have their own file path
   FILE_PATH = File.dirname(__FILE__) + "/../data/data.csv"
-  create_finder_methods("brand", "name")
+  
+  # This variable is used to define find_by methods
+  # and produce inventory reports functions
+  @@queryable = ["brand", "name"]
+  create_finder_methods(*@@queryable)
 
   def initialize(opts={})
 
@@ -35,6 +39,10 @@ class Product < Udacidata
 
   def ==(another_product)
     id == another_product.id
+  end
+
+  def self.queryable
+    @@queryable
   end
 
   private

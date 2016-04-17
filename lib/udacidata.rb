@@ -112,7 +112,7 @@ class Udacidata
   def inspect
     repr = "[#{self.class}] ".light_red
     variables = self.instance_variables.map do |variable|
-      variable.to_s.sub('@','').light_blue + ':'.light_yellow + self.instance_variable_get(variable).to_s.light_green
+      variable.to_s.sub('@','').light_blue + ':'.light_yellow + self.instance_variable_get(variable).to_s.green
     end
     repr += variables.join(" ")
     repr += "\n"
